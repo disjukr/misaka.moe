@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>misaka moe</title>
+        <script src="./MIDI.js/inc/shim/Base64.js"></script>
+        <script src="./MIDI.js/inc/shim/Base64binary.js"></script>
+        <script src="./MIDI.js/inc/shim/WebAudioAPI.js"></script>
+        <script src="./MIDI.js/inc/shim/WebMIDIAPI.js"></script>
+        <script src="./MIDI.js/inc/jasmid/stream.js"></script>
+        <script src="./MIDI.js/inc/jasmid/midifile.js"></script>
+        <script src="./MIDI.js/inc/jasmid/replayer.js"></script>
+        <script src="./MIDI.js/js/util/dom_request_xhr.js"></script>
+        <script src="./MIDI.js/js/util/dom_request_script.js"></script>
+        <script src="./MIDI.js/build/MIDI.min.js"></script>
+    </head>
+    <body>
+        <script>
+            function playMidi() {
+                MIDI.Player.loadFile('./only-my-railgun.mid', MIDI.Player.start);
+            }
+            MIDI.loadPlugin({
+                soundfontUrl: './soundfonts/',
+                instrument: 'music_box',
+                onsuccess: function () {
+                    MIDI.programChange(0, 10);
+                    playMidi();
+                    MIDI.Player.setAnimation(function (data) {
+                        if ((data.now | 0) === (data.end | 0)) {
+                            playMidi();
+                        }
+                    });
+                },
+            });
+        </script>
+    </body>
+</html>
